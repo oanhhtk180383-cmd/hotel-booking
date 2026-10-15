@@ -1,2 +1,2 @@
 # hotel-booking
-Website giúp khách hàng tìm phòng trống, đặt phòng và quản lý lịch sử lưu trú; quản trị viên quản lý phòng, đặt phòng và người dùng.
+HotelBooking là website tiếng Việt giúp khách tìm phòng, kiểm tra phòng trống theo ngày và số khách, tạo đặt phòng, theo dõi lịch sử lưu trú và gửi đánh giá. Quản trị viên quản lý loại phòng, phòng, đặt phòng và tài khoản người dùng.
