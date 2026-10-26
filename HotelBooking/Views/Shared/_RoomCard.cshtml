@@ -1,0 +1,9 @@
+@model LoaiPhong
+<article class="room-card">
+    <a class="room-image-link" asp-area="" asp-controller="Rooms" asp-action="Details" asp-route-id="@Model.MaLoaiPhong">
+        <img src="@(string.IsNullOrWhiteSpace(Model.HinhAnh) ? "/images/room.svg" : Model.HinhAnh)" alt="@Model.TenLoaiPhong" loading="lazy"/>
+        <div class="room-image-shade"></div>
+        <div class="room-caption"><span>@Model.GiaMoiDem.ToString("N0") ₫ <small>/ đêm</small></span><h3>@Model.TenLoaiPhong</h3><span class="room-more">Xem phòng <span aria-hidden="true">→</span></span></div>
+    </a>
+    <div class="room-meta"><span>Tối đa @Model.SoKhachToiDa khách</span><span>@Model.TienNghi</span></div>
+</article>

@@ -1,0 +1,5 @@
+@model PagedList<Phong>
+@{ViewData["Title"]="Quản lý phòng";}
+<div class="section-title mt-0"><h1>Phòng</h1><a class="btn btn-primary" asp-route="admin" asp-route-controller="Phong" asp-route-action="Create">Thêm phòng</a></div><div class="surface table-responsive"><table class="table align-middle"><thead><tr><th>Số phòng</th><th>Loại phòng</th><th>Trạng thái</th><th>Thao tác</th></tr></thead><tbody>@foreach(var m in Model){<tr><td>@m.SoPhong</td><td>@m.LoaiPhong!.TenLoaiPhong</td><td>@Labels.Status(m.TrangThai)</td><td><div class="d-flex gap-2"><a class="btn btn-outline-primary btn-sm" asp-route="admin" asp-route-controller="Phong" asp-route-action="Edit" asp-route-id="@m.MaPhong">Sửa</a><form method="post" asp-route="admin" asp-route-controller="Phong" asp-route-action="Xoa" asp-route-id="@m.MaPhong" data-confirm="Xóa mềm phòng này?"><button class="btn btn-outline-danger btn-sm">Xóa</button></form></div></td></tr>}</tbody></table>@if(Model.Count==0){<p class="text-muted">Chưa có phòng.</p>}</div>
+
+<partial name="_Pagination" model="Model"/>

@@ -1,0 +1,19 @@
+@model SearchModel
+<form asp-area="" asp-controller="Rooms" asp-action="Search" method="get" class="search-panel" novalidate>
+    <div class="search-field">
+        <label asp-for="NgayNhan" class="form-label">Ngày nhận phòng</label>
+        <input asp-for="NgayNhan" type="date" min="@HotelClock.Today.ToString("yyyy-MM-dd")" class="form-control" data-val="true" data-val-required="Chọn ngày nhận phòng."/>
+        <span asp-validation-for="NgayNhan" class="text-danger"></span>
+    </div>
+    <div class="search-field">
+        <label asp-for="NgayTra" class="form-label">Ngày trả phòng</label>
+        <input asp-for="NgayTra" type="date" class="form-control" data-val="true" data-val-required="Chọn ngày trả phòng."/>
+        <span asp-validation-for="NgayTra" class="text-danger"></span>
+    </div>
+    <div class="search-field search-guests">
+        <label asp-for="SoKhach" class="form-label">Số khách</label>
+        <input asp-for="SoKhach" type="number" min="1" class="form-control"/>
+        <span asp-validation-for="SoKhach" class="text-danger"></span>
+    </div>
+    <button class="btn btn-primary search-button">Tìm phòng trống <span aria-hidden="true">→</span></button>
+</form>

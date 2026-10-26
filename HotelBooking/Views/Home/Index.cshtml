@@ -1,0 +1,24 @@
+@model List<LoaiPhong>
+@{ ViewData["Title"] = "Trang chủ"; }
+<section class="home-hero">
+    <img class="hero-photo" src="~/images/paradise/hero.jpg" alt="Không gian nghỉ dưỡng bên biển" fetchpriority="high"/>
+    <div class="hero-shade"></div>
+    <div class="container hero-content">
+        <span class="eyebrow">CHÀO MỪNG ĐẾN HOTELBOOKING</span>
+        <h1>Một nơi nghỉ ngơi.<br/>Một hành trình đáng nhớ.</h1>
+        <p>Chọn phòng và lên kế hoạch cho kỳ nghỉ của bạn.</p>
+        <div class="hero-search"><partial name="_Search" model="new SearchModel()"/></div>
+    </div>
+    <a class="scroll-link" href="#rooms">KHÁM PHÁ PHÒNG <span aria-hidden="true">↓</span></a>
+</section>
+<section class="container room-section" id="rooms">
+    <div class="section-title"><div><span class="eyebrow">KHÔNG GIAN LƯU TRÚ</span><h2>Phòng dành cho bạn</h2><p>Tìm một không gian phù hợp với chuyến đi của mình.</p></div><a class="text-link" asp-controller="Rooms" asp-action="Index">Xem tất cả phòng <span aria-hidden="true">→</span></a></div>
+    <div class="row g-4">
+        @for (var i = 0; i < Model.Count; i++)
+        {
+            <div class="col-md-6"><partial name="_RoomCard" model="Model[i]"/></div>
+        }
+    </div>
+    @if (Model.Count == 0) { <div class="empty-state">Chưa có loại phòng. Vui lòng quay lại sau.</div> }
+</section>
+<section class="stay-note"><div class="container"><span class="eyebrow">LÊN KẾ HOẠCH LƯU TRÚ</span><h2>Chọn ngày, tìm phòng.<br/>Sẵn sàng cho kỳ nghỉ tiếp theo.</h2><a class="btn btn-primary" asp-controller="Rooms" asp-action="Index">Tìm phòng trống</a></div></section>

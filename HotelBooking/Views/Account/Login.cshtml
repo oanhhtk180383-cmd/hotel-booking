@@ -1,0 +1,4 @@
+@model LoginModel
+@{ViewData["Title"]="Đăng nhập";}
+<section class="auth-card surface"><span class="eyebrow">HOTELBOOKING</span><h1 class="h2 my-3">Đăng nhập</h1><form method="post"><div asp-validation-summary="ModelOnly" class="text-danger"></div><input asp-for="ReturnUrl" type="hidden"/><div class="mb-3"><label asp-for="Email" class="form-label">Email</label><input asp-for="Email" class="form-control" type="email" /><span asp-validation-for="Email" class="text-danger"></span></div><div class="mb-3"><label asp-for="MatKhau" class="form-label">Mật khẩu</label><input asp-for="MatKhau" class="form-control" type="password" /><span asp-validation-for="MatKhau" class="text-danger"></span></div><button class="btn btn-primary w-100">Đăng nhập</button></form><div class="d-flex justify-content-between mt-4"><a asp-action="ForgotPassword">Quên mật khẩu?</a><a asp-action="Register">Đăng ký tài khoản</a></div></section>
+

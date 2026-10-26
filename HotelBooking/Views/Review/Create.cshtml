@@ -1,0 +1,4 @@
+@model DanhGia
+@{ViewData["Title"]="Đánh giá phòng";}
+<section class="auth-card surface"><span class="eyebrow">HOTELBOOKING</span><h1 class="h2 my-3">Đánh giá phòng</h1><form method="post"><div asp-validation-summary="ModelOnly" class="text-danger"></div><input asp-for="MaDatPhong" type="hidden"/><label asp-for="SoSao" class="form-label">Số sao</label><select asp-for="SoSao" class="form-select mb-3"><option value="1">1 sao</option><option value="2">2 sao</option><option value="3">3 sao</option><option value="4">4 sao</option><option value="5">5 sao</option></select><span asp-validation-for="SoSao" class="text-danger d-block mb-3"></span><label asp-for="NoiDung" class="form-label">Nhận xét</label><textarea asp-for="NoiDung" class="form-control mb-3" rows="5" maxlength="1000"></textarea><span asp-validation-for="NoiDung" class="text-danger d-block mb-3"></span><button class="btn btn-primary w-100">Gửi đánh giá</button></form></section>
+

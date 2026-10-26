@@ -1,0 +1,18 @@
+@model RoomDetail
+@{ ViewData["Title"] = Model.LoaiPhong.TenLoaiPhong; SearchModel search = ViewBag.Search; }
+<a asp-action="Index" class="back-link">← Các loại phòng</a>
+<div class="room-detail-header"><span class="eyebrow">HOTELBOOKING · PHÒNG &amp; LƯU TRÚ</span><h1>@Model.LoaiPhong.TenLoaiPhong</h1><p>Tối đa @Model.LoaiPhong.SoKhachToiDa khách · @Model.LoaiPhong.GiaMoiDem.ToString("N0") ₫ / đêm</p></div>
+<div class="row g-5"><div class="col-lg-8">
+    <img class="detail-image" src="@(string.IsNullOrWhiteSpace(Model.LoaiPhong.HinhAnh) ? "/images/room.svg" : Model.LoaiPhong.HinhAnh)" alt="@Model.LoaiPhong.TenLoaiPhong"/>
+    <section class="detail-copy"><span class="eyebrow">KHÔNG GIAN NGHỈ NGƠI</span><h2 class="h3">Về phòng @Model.LoaiPhong.TenLoaiPhong</h2><p class="preserve-lines">@Model.LoaiPhong.MoTa</p><h3 class="h5">Tiện nghi trong phòng</h3><div class="amenity-list">@foreach (var amenity in (Model.LoaiPhong.TienNghi ?? "").Split(',', StringSplitOptions.RemoveEmptyEntries)) { <span><span aria-hidden="true">✓</span> @amenity.Trim()</span> }</div></section>
+    <section class="review-section"><div class="section-title"><div><span class="eyebrow">SAU KỲ LƯU TRÚ</span><h2 class="h3">Đánh giá của khách hàng</h2></div>@if (Model.DanhGia.Count > 0) { <span class="review-score">@Model.DanhGia.Average(x => x.SoSao).ToString("0.0") <small>/ 5</small></span> }</div>
+    @if (Model.DanhGia.Count == 0) { <p class="text-muted">Chưa có đánh giá.</p> }
+    @foreach (var r in Model.DanhGia) { <article class="review-item"><div class="d-flex justify-content-between"><strong>@r.NguoiDung.HoTen</strong><span class="stars">@r.SoSao / 5 ★</span></div><small class="text-muted">@r.NgayTao.ToString("dd/MM/yyyy")</small><p class="preserve-lines mt-2 mb-0">@r.NoiDung</p></article> }
+    </section>
+</div><aside class="col-lg-4"><div class="surface sticky-booking"><span class="eyebrow">GIÁ MỖI ĐÊM</span><h2 class="booking-price">@Model.LoaiPhong.GiaMoiDem.ToString("N0") <small>₫</small></h2><form asp-controller="Booking" asp-action="Create" method="get" novalidate>
+    <input type="hidden" name="MaLoaiPhong" value="@Model.LoaiPhong.MaLoaiPhong"/>
+    <div class="mb-3"><label class="form-label" for="receive">Ngày nhận phòng</label><input id="receive" class="form-control" type="date" name="NgayNhan" min="@HotelClock.Today.ToString("yyyy-MM-dd")" value="@search.NgayNhan.ToString("yyyy-MM-dd")" data-val="true" data-val-required="Chọn ngày nhận phòng."/><span data-valmsg-for="NgayNhan" data-valmsg-replace="true" class="text-danger"></span></div>
+    <div class="mb-3"><label class="form-label" for="leave">Ngày trả phòng</label><input id="leave" class="form-control" type="date" name="NgayTra" value="@search.NgayTra.ToString("yyyy-MM-dd")" data-val="true" data-val-required="Chọn ngày trả phòng."/><span data-valmsg-for="NgayTra" data-valmsg-replace="true" class="text-danger"></span></div>
+    <div class="mb-4"><label class="form-label" for="guests">Số khách</label><input id="guests" class="form-control" type="number" name="SoKhach" min="1" max="@Model.LoaiPhong.SoKhachToiDa" value="@search.SoKhach" data-val="true" data-val-required="Nhập số khách." data-val-range="Số khách từ 1 đến @Model.LoaiPhong.SoKhachToiDa." data-val-range-min="1" data-val-range-max="@Model.LoaiPhong.SoKhachToiDa"/><span data-valmsg-for="SoKhach" data-valmsg-replace="true" class="text-danger"></span></div>
+    <button class="btn btn-primary w-100">Đặt ngay <span aria-hidden="true">→</span></button>
+</form><p class="booking-note">Kiểm tra phòng trống trước khi xác nhận đặt phòng.</p></div></aside></div>

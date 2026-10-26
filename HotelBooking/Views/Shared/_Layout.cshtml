@@ -1,0 +1,77 @@
+@{
+    var controller = ViewContext.RouteData.Values["controller"]?.ToString();
+    var isAdmin = ViewContext.HttpContext.Request.Path.StartsWithSegments("/Admin", StringComparison.OrdinalIgnoreCase);
+    var isAdminUser = User.IsInRole("Admin");
+    var isHome = !isAdmin && controller == "Home" && ViewContext.RouteData.Values["action"]?.ToString() == "Index";
+    var isAccount = controller == "Account" && !isAdmin;
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="referrer" content="same-origin"/>
+    <title>@ViewData["Title"] · HotelBooking</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
+</head>
+<body class="@(isHome ? "home-page" : isAccount ? "account-page" : isAdmin ? "admin-page" : "inner-page")">
+<header class="site-header @(isHome ? "header-overlay" : "")">
+    <nav class="navbar navbar-expand-lg container">
+        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><span class="brand-mark" aria-hidden="true">H</span><span>HOTELBOOKING<small>HOTEL &amp; ROOMS</small></span></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navigation" aria-label="Mở menu" aria-expanded="false"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navigation">
+            <div class="navbar-nav ms-auto align-items-lg-center gap-lg-3">
+                <a class="nav-link @(isHome ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Index">Trang chủ</a>
+                <a class="nav-link @(controller == "Rooms" ? "active" : "")" asp-area="" asp-controller="Rooms" asp-action="Index">Phòng &amp; lưu trú</a>
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    @if (isAdminUser)
+                    {
+                        <a class="nav-link" asp-route="admin" asp-route-controller="Dashboard" asp-route-action="Index">Quản trị</a>
+                    }
+                    else
+                    {
+                        <a class="nav-link" asp-area="" asp-controller="Booking" asp-action="Index">Đặt phòng của tôi</a>
+                        <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Profile">Hồ sơ</a>
+                    }
+                    <form asp-area="" asp-controller="Account" asp-action="Logout" method="post"><button class="btn btn-outline-primary btn-sm">Đăng xuất</button></form>
+                }
+                else
+                {
+                    <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Login">Đăng nhập</a>
+                    <a class="btn btn-primary btn-sm" asp-area="" asp-controller="Account" asp-action="Register">Đăng ký</a>
+                }
+            </div>
+        </div>
+    </nav>
+</header>
+<main class="@(isHome ? "home-main" : isAccount ? "account-main" : "container page-content")">
+    @if (isAccount)
+    {
+        <aside class="auth-visual"><div><span class="eyebrow">HOTELBOOKING</span><h2>Kỳ nghỉ của bạn<br/>bắt đầu từ đây.</h2><p>Một không gian nghỉ ngơi, một hành trình mới.</p></div></aside>
+    }
+    <div class="@(isAccount ? "auth-content" : isHome ? "home-content" : "")">
+        @if (TempData["Success"] is string success) { <div role="status" class="alert alert-success flash-message fade show">@success</div> }
+        @if (TempData["Error"] is string error) { <div role="alert" class="alert alert-danger flash-message fade show">@error</div> }
+        @if (isAdmin)
+        {
+            <nav class="admin-nav mb-4" aria-label="Quản trị">
+                <span class="eyebrow">QUẢN TRỊ</span>
+                @foreach (var item in new[] { ("Dashboard", "Tổng quan"), ("LoaiPhong", "Loại phòng"), ("Phong", "Phòng"), ("DatPhong", "Đặt phòng"), ("NguoiDung", "Người dùng") })
+                {
+                    <a class="@(controller == item.Item1 ? "active" : "")" asp-route="admin" asp-route-controller="@item.Item1" asp-route-action="Index">@item.Item2</a>
+                }
+            </nav>
+        }
+        @RenderBody()
+    </div>
+</main>
+<footer class="site-footer"><div class="container"><a class="footer-brand" asp-area="" asp-controller="Home" asp-action="Index">HOTELBOOKING</a><p>Chọn phòng phù hợp. Tận hưởng chuyến đi của bạn.</p><div class="footer-bottom"><span>Website đặt phòng khách sạn</span><div><a asp-area="" asp-controller="Rooms" asp-action="Index">Các loại phòng</a>@if (User.Identity?.IsAuthenticated == true && !isAdminUser) { <a asp-area="" asp-controller="Booking" asp-action="Index">Đặt phòng của tôi</a> }</div></div></div></footer>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<partial name="_ValidationScriptsPartial"/>
+<script src="~/js/site.js" asp-append-version="true"></script>
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

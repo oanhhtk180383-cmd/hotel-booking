@@ -1,0 +1,20 @@
+@model PagedList<RoomResult>
+@{ ViewData["Title"] = "Kết quả tìm phòng"; SearchModel search = ViewBag.Search; }
+<div class="page-heading"><span class="eyebrow">CHỌN KHÔNG GIAN LƯU TRÚ</span><h1>Kết quả tìm phòng</h1><p>Phòng trống theo ngày và số khách bạn đã chọn.</p></div>
+<partial name="_Search" model="search"/>
+<div asp-validation-summary="ModelOnly" class="text-danger mt-3"></div>
+<div class="row g-4 room-list">
+@foreach (var r in Model)
+{
+    <div class="col-md-6 col-xl-4"><article class="room-card search-result">
+        <a class="room-image-link" asp-action="Details" asp-route-id="@r.LoaiPhong.MaLoaiPhong" asp-route-ngayNhan="@search.NgayNhan.ToString("yyyy-MM-dd")" asp-route-ngayTra="@search.NgayTra.ToString("yyyy-MM-dd")" asp-route-soKhach="@search.SoKhach">
+            <img src="@(string.IsNullOrWhiteSpace(r.LoaiPhong.HinhAnh) ? "/images/room.svg" : r.LoaiPhong.HinhAnh)" alt="@r.LoaiPhong.TenLoaiPhong" loading="lazy"/>
+            <div class="room-image-shade"></div><span class="availability">Còn @r.ConTrong phòng</span>
+            <div class="room-caption"><span>@r.LoaiPhong.GiaMoiDem.ToString("N0") ₫ <small>/ đêm</small></span><h2 class="h3">@r.LoaiPhong.TenLoaiPhong</h2><span class="room-more">Xem và đặt phòng →</span></div>
+        </a><div class="room-meta"><span>Tối đa @r.LoaiPhong.SoKhachToiDa khách</span><span>@r.LoaiPhong.TienNghi</span></div>
+    </article></div>
+}
+</div>
+@if (Model.Count == 0 && ViewData.ModelState.IsValid && TempData["Error"] is null) { <div class="empty-state">Không có phòng trống, hãy chọn ngày khác</div> }
+
+<partial name="_Pagination" model="Model"/>

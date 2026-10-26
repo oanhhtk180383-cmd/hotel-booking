@@ -1,0 +1,8 @@
+@model PagedList<LoaiPhong>
+@{ ViewData["Title"] = "Các loại phòng"; }
+<div class="page-heading"><span class="eyebrow">HOTELBOOKING · PHÒNG &amp; LƯU TRÚ</span><h1>Các loại phòng</h1><p>Không gian nghỉ ngơi phù hợp cho chuyến đi của bạn.</p></div>
+<partial name="_Search" model="new SearchModel()"/>
+<div class="row g-4 room-list">@foreach (var room in Model) { <div class="col-md-6 col-xl-4"><partial name="_RoomCard" model="room"/></div> }</div>
+@if (Model.Count == 0) { <div class="empty-state">Chưa có loại phòng.</div> }
+
+<partial name="_Pagination" model="Model"/>
